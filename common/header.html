@@ -1,0 +1,10 @@
+<script type="text/discourse-plugin" version="0.8">
+    api.modifyClass("component:categories-boxes", {
+        actions: {
+            changeCategoryNotificationLevel(category, args) {
+                let notificationLevel = args;
+                category.setNotification(notificationLevel);
+            }
+        }
+    })
+</script>
