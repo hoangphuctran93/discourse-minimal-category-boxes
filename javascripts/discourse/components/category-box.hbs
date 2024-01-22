@@ -32,6 +32,10 @@
           {{this.getAbbreviation}}
         </span>
       {{/if}}
+      {{category-notifications-button
+            value=c.notification_level
+            onChange=(action "changeCategoryNotificationLevel" c)
+          }}
     </div>
 
     <div class="category-details">
