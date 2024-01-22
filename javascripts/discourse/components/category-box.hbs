@@ -56,11 +56,6 @@
     });
     
     api.modifyClass("component:categories-boxes", {
-        category_tag_list: Ember.computed(function() {
-            const result = parseTags(settings.tag_list);
-            return result;
-        }),
-        
         actions: {
             changeCategoryNotificationLevel(category, args) {
                 let notificationLevel = args;
@@ -69,6 +64,58 @@
         }
     })
 </script>
+
+
+
+<script type="text/x-handlebars" data-template-name="components/categories-boxes">
+{{#each categories as |c|}}
+  <div style={{border-color c.color}} data-category-id={{c.id}} data-notification-level={{c.notificationLevelString}} data-url={{c.url}} class="category category-box category-box-{{c.slug}} {{if c.isMuted "muted"}} {{if noCategoryStyle "no-category-boxes-style"}}">
+    <div class="category-box-inner">
+      <div class="category-logo" href={{c.url}}>
+          {{category-notifications-button
+            value=c.notification_level
+            onChange=(action "changeCategoryNotificationLevel" c)
+          }}
+        {{#if (theme-setting 'show_category_unreadnew')}}
+            {{category-unread category=c tagName="div" class="unread-new"}}
+        {{/if}}
+        {{#if c.uploaded_logo.url}}
+          <a href={{c.url}}>
+            {{cdn-img
+                src=c.uploaded_logo.url
+                class="logo"
+                width=c.uploaded_logo.width
+                height=c.uploaded_logo.height
+            }}
+          </a>
+        {{/if}}
+      </div>
+      
+      <div class="category-details">
+        <div class="category-box-heading">
+          <a href={{c.url}}>
+            <h3>
+              {{#if c.read_restricted}}
+                {{d-icon "lock"}}
+              {{/if}}
+              {{c.name}}
+            </h3>
+          </a>
+          <div class="description">
+              {{text-overflow class="overflow" text=c.description_excerpt}}
+          </div>
+        </div>
+
+        
+      </div>
+      {{#if (theme-setting 'show_quantity')}}
+        <div class="category-stats" title={{c.statTitle}}>{{html-safe c.stat}}</div>
+      {{/if}}
+    </div>
+  </div>
+{{/each}}
+</script>
+
 
 <a
   href={{@category.url}}
