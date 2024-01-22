@@ -15,6 +15,10 @@
         {{if @category.uploaded_logo.url "" "no-logo-present"}}"
       style={{this.backgroundColor}}
     >
+    {{category-notifications-button
+            value=c.notification_level
+            onChange=(action "changeCategoryNotificationLevel" c)
+          }}
       {{#if @category.uploaded_logo.url}}
         {{cdn-img
           src=@category.uploaded_logo.url
